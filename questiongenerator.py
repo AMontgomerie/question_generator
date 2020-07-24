@@ -12,7 +12,7 @@ from transformers import BertTokenizer, BertForSequenceClassification
 class QuestionGenerator():
 
     def __init__(self, model_dir=None):
-        QG_PRETRAINED = 't5-small'
+        QG_PRETRAINED = 't5-base'
         QG_FINETUNED_MODEL = 'qg_model.pth'
         self.ANSWER_TOKEN = '<answer>'
         self.CONTEXT_TOKEN = '<context>'
@@ -26,21 +26,20 @@ class QuestionGenerator():
         )
 
         config = T5Config(decoder_start_token_id=self.qg_tokenizer.pad_token_id)
-        self.qg_model = T5ForConditionalGeneration(config) #.from_pretrained(QG_PRETRAINED)
+        self.qg_model = T5ForConditionalGeneration(config).from_pretrained(QG_PRETRAINED)
         self.qg_model.resize_token_embeddings(len(self.qg_tokenizer))
 
         if model_dir:
             checkpoint = torch.load(os.path.join(model_dir, QG_FINETUNED_MODEL))
         else:
-            checkpoint = torch.load(os.path.join(sys.path[0], QG_FINETUNED_MODEL))
+            checkpoint = torch.load(os.path.join(sys.path[0], 'models/', QG_FINETUNED_MODEL))
 
         self.qg_model.load_state_dict(checkpoint['model_state_dict'])
         self.qg_model.to(self.device)
 
         self.qa_evaluator = QAEvaluator(model_dir)
 
-    def generate_questions(self, article, use_evaluator=True, num_questions=None):
-        print("\nGenerating questions...")
+    def generate(self, article, use_evaluator=True, num_questions=None):
         qg_inputs, qg_answers = self.generate_qg_inputs(article, use_NER=True)
         generated_questions = self.generate_questions_from_inputs(qg_inputs)
 
@@ -50,16 +49,17 @@ class QuestionGenerator():
         assert len(generated_questions) == len(qg_answers), message
 
         if use_evaluator:
-            print("\nEvaluating questions...")
             encoded_qa_pairs = self.qa_evaluator.encode_qa_pairs(generated_questions, qg_answers)
             scores = self.qa_evaluator.get_scores(encoded_qa_pairs)
             if num_questions:
-                self._print_ranked_qa_pairs(generated_questions, qg_answers, scores, num_questions)
+                qa_list = self._get_ranked_qa_pairs(generated_questions, qg_answers, scores, num_questions)
             else:
-                self._print_ranked_qa_pairs(generated_questions, qg_answers, scores)
+                qa_list = self._get_ranked_qa_pairs(generated_questions, qg_answers, scores)
 
         else:
-            self._print_all_qa_pairs(generated_questions, qg_answers)
+            qa_list = self._get_all_qa_pairs(generated_questions, qg_answers)
+
+        return qa_list
 
     def generate_qg_inputs(self, text, use_NER=False):
         sentences = self._split_text(text)
@@ -150,23 +150,34 @@ class QuestionGenerator():
             return_tensors="pt"
         ).to(self.device)
 
-    def _print_ranked_qa_pairs(self, generated_questions, qg_answers, scores, num_questions=10):
+    def _get_ranked_qa_pairs(self, generated_questions, qg_answers, scores, num_questions=10):
         if num_questions > len(scores):
             num_questions = len(scores)
             print("\nWas only able to generate {} questions. For more questions, please input a longer text.".format(num_questions))
-        print("\nTop {} generated questions:".format(num_questions))
+
+        qa_list = []
         for i in range(num_questions):
             index = scores[i]
-            q_num = i + 1
-            print('{}) Q: {}'.format(q_num, generated_questions[index].split('?')[0] + '?'))
-            print('{}A:'.format(' ' * int(np.where(q_num < 10, 3, 4))), qg_answers[index], '\n')
+            qa = self._make_dict(
+                generated_questions[index].split('?')[0] + '?',
+                qg_answers[index])
+            qa_list.append(qa)
+        return qa_list
 
-    def _print_all_qa_pairs(self, generated_questions, qg_answers):
-        print("\nAll generated questions:")
+    def _get_all_qa_pairs(self, generated_questions, qg_answers):
+        qa_list = []
         for i in range(len(generated_questions)):
-            q_num = i + 1
-            print('{}) Q: {}'.format(q_num, generated_questions[i].split('?')[0] + '?'))
-            print('{}A:'.format(' ' * int(np.where(q_num < 10, 3, 4))), qg_answers[i], '\n')
+            qa = self._make_dict(
+                generated_questions[i].split('?')[0] + '?',
+                qg_answers[i])
+            qa_list.append(qa)
+        return qa_list
+
+    def _make_dict(self, question, answer):
+        qa = {}
+        qa['question'] = question
+        qa['answer'] = answer
+        return qa
 
 class QAEvaluator():
     def __init__(self, model_dir=None):
@@ -183,7 +194,7 @@ class QAEvaluator():
         if model_dir:
             checkpoint = torch.load(os.path.join(model_dir, QAE_FINETUNED_MODEL))
         else:
-            checkpoint = torch.load(os.path.join(sys.path[0], QAE_FINETUNED_MODEL))
+            checkpoint = torch.load(os.path.join(sys.path[0], 'models/', QAE_FINETUNED_MODEL))
 
         self.qae_model.load_state_dict(state_dict=checkpoint['model_state_dict'])
         self.qae_model = self.qae_model.to(self.device)
