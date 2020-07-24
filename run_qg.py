@@ -30,6 +30,12 @@ def main():
         type=str,
         help="The desired type of answers. Choose from ['all', 'sentences', 'multiple_choice']",
     )
+    parser.add_argument(
+        "--use_qa_eval",
+        default=True,
+        type=str,
+        help="Whether or not you want the generated questions to be filtered for quality. Choose from ['True', 'False']",
+    )
     args = parser.parse_args()
 
     with open(args.text_dir, 'r') as file:
@@ -37,9 +43,14 @@ def main():
 
     qg = QuestionGenerator(args.model_dir)
 
-    print("\nGenerating questions...")
-    qa_list = qg.generate(text_file, args.num_questions, args.answer_style)
+    qa_list = qg.generate(
+        text_file,
+        num_questions=int(args.num_questions),
+        answer_style=args.answer_style,
+        use_evaluator=np.where(args.use_qa_eval == 'True', True, False)
+    )
     print_qa(qa_list)
+
 
 if __name__ == "__main__":
     main()

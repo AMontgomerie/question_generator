@@ -43,6 +43,8 @@ class QuestionGenerator():
 
     def generate(self, article, use_evaluator=True, num_questions=None, answer_style='all'):
 
+        print("Generating questions...\n")
+
         qg_inputs, qg_answers = self.generate_qg_inputs(article, answer_style)
         generated_questions = self.generate_questions_from_inputs(qg_inputs)
 
@@ -52,6 +54,9 @@ class QuestionGenerator():
         assert len(generated_questions) == len(qg_answers), message
 
         if use_evaluator:
+
+            print("Evaluating QA pairs...\n")
+
             encoded_qa_pairs = self.qa_evaluator.encode_qa_pairs(generated_questions, qg_answers)
             scores = self.qa_evaluator.get_scores(encoded_qa_pairs)
             if num_questions:
@@ -60,6 +65,7 @@ class QuestionGenerator():
                 qa_list = self._get_ranked_qa_pairs(generated_questions, qg_answers, scores)
 
         else:
+            print("\nSkipping evaluation step...")
             qa_list = self._get_all_qa_pairs(generated_questions, qg_answers)
 
         return qa_list
@@ -233,6 +239,7 @@ class QuestionGenerator():
         qa['answer'] = answer
         return qa
 
+
 class QAEvaluator():
     def __init__(self, model_dir=None):
         QAE_PRETRAINED = 'bert-base-cased'
@@ -289,7 +296,8 @@ class QAEvaluator():
         output = self.qae_model(**encoded_qa_pair)
         return output[0][0][1]
 
-def print_qa(qa_list):
+
+def print_qa(qa_list, show_answers=True):
     for i in range(len(qa_list)):
         space = ' ' * int(np.where(i < 9, 3, 4)) # wider space for 2 digit q nums
 
@@ -299,15 +307,25 @@ def print_qa(qa_list):
 
         # print a list of multiple choice answers
         if type(answer) is list:
-            print('{}A: 1.'.format(space),
-                  answer[0]['answer'],
-                  np.where(answer[0]['correct'], '(correct)', ''))
-            for j in range(1, len(answer)):
-                print('{}{}.'.format(space + '   ', j + 1),
-                      answer[j]['answer'],
-                      np.where(answer[j]['correct'] == True, '(correct)', ''))
+
+            if show_answers:
+                print('{}A: 1.'.format(space),
+                      answer[0]['answer'],
+                      np.where(answer[0]['correct'], '(correct)', ''))
+                for j in range(1, len(answer)):
+                    print('{}{}.'.format(space + '   ', j + 1),
+                          answer[j]['answer'],
+                          np.where(answer[j]['correct'] == True, '(correct)', ''))
+
+            else:
+                print('{}A: 1.'.format(space),
+                      answer[0]['answer'])
+                for j in range(1, len(answer)):
+                    print('{}{}.'.format(space + '   ', j + 1),
+                          answer[j]['answer'])
             print('')
 
         # print full sentence answers
         else:
-            print('{}A:'.format(space), answer, '\n')
+            if show_answers:
+                print('{}A:'.format(space), answer, '\n')
