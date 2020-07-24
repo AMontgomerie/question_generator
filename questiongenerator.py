@@ -5,6 +5,8 @@ import numpy as np
 import torch
 import spacy
 import re
+import random
+import json
 import en_core_web_sm
 from transformers import T5Tokenizer, T5ForConditionalGeneration, T5Config
 from transformers import BertTokenizer, BertForSequenceClassification
@@ -39,8 +41,9 @@ class QuestionGenerator():
 
         self.qa_evaluator = QAEvaluator(model_dir)
 
-    def generate(self, article, use_evaluator=True, num_questions=None):
-        qg_inputs, qg_answers = self.generate_qg_inputs(article, use_NER=True)
+    def generate(self, article, use_evaluator=True, num_questions=None, answer_style='all'):
+
+        qg_inputs, qg_answers = self.generate_qg_inputs(article, answer_style)
         generated_questions = self.generate_questions_from_inputs(qg_inputs)
 
         message = "{} questions doesn't match {} answers".format(
@@ -61,17 +64,32 @@ class QuestionGenerator():
 
         return qa_list
 
-    def generate_qg_inputs(self, text, use_NER=False):
+    def generate_qg_inputs(self, text, answer_style):
+
+        VALID_ANSWER_STYLES = ['all', 'sentences', 'multiple_choice']
+
         sentences = self._split_text(text)
         inputs = []
         answers = []
-        if use_NER:
-            prepped_inputs, prepped_answers = self._prepare_qg_inputs_NER(sentences)
+
+        if answer_style not in VALID_ANSWER_STYLES:
+            raise ValueError(
+                "Invalid answer style {}. Please choose from {}".format(
+                    answer_style,
+                    VALID_ANSWER_STYLES
+                )
+            )
+
+        if answer_style == 'sentences' or answer_style == 'all':
+            prepped_inputs, prepped_answers = self._prepare_qg_inputs(sentences, text)
             inputs.extend(prepped_inputs)
             answers.extend(prepped_answers)
-        prepped_inputs, prepped_answers = self._prepare_qg_inputs(sentences, text)
-        inputs.extend(prepped_inputs)
-        answers.extend(prepped_answers)
+
+        if answer_style == 'multiple_choice' or answer_style == 'all':
+            prepped_inputs, prepped_answers = self._prepare_qg_inputs_MC(sentences)
+            inputs.extend(prepped_inputs)
+            answers.extend(prepped_answers)
+
         return inputs, answers
 
     def generate_questions_from_inputs(self, qg_inputs):
@@ -113,7 +131,8 @@ class QuestionGenerator():
 
         return inputs, answers
 
-    def _prepare_qg_inputs_NER(self, sentences):
+    def _prepare_qg_inputs_MC(self, sentences):
+
         spacy_nlp = en_core_web_sm.load()
         docs = list(spacy_nlp.pipe(sentences, disable=['parser']))
         inputs_from_text = []
@@ -129,10 +148,45 @@ class QuestionGenerator():
                         self.CONTEXT_TOKEN,
                         sentences[i]
                     )
+                    answers = self._get_MC_answers(entity, docs)
                     inputs_from_text.append(qg_input)
-                    answers_from_text.append(str(entity))
+                    answers_from_text.append(answers)
 
         return inputs_from_text, answers_from_text
+
+    def _get_MC_answers(self, correct_answer, docs):
+
+        entities = []
+        for doc in docs:
+            entities.extend([{'text': e.text, 'label_': e.label_} for e in doc.ents])
+
+        # remove duplicate elements
+        entities_json = [json.dumps(kv) for kv in entities]
+        pool = set(entities_json)
+        num_choices = min(4, len(pool)) - 1  # -1 because we already have the correct answer
+
+        # add the correct answer
+        final_choices = []
+        correct_label = correct_answer.label_
+        final_choices.append({'answer': correct_answer.text, 'correct': True})
+        pool.remove(json.dumps({'text': correct_answer.text, 'label_': correct_answer.label_}))
+
+        # find answers with the same NER label
+        matches = [e for e in pool if correct_label in e]
+
+        # if we don't have enough then add some other random answers
+        if len(matches) < num_choices:
+            choices = matches
+            pool = pool.difference(set(choices))
+            choices.extend(random.sample(pool, num_choices - len(choices)))
+        else:
+            choices = random.sample(matches, num_choices)
+
+        choices = [json.loads(s) for s in choices]
+        for choice in choices:
+            final_choices.append({'answer': choice['text'], 'correct': False})
+        random.shuffle(final_choices)
+        return final_choices
 
     def _generate_question(self, qg_input):
         self.qg_model.eval()
@@ -216,9 +270,15 @@ class QAEvaluator():
         return [k for k, v in sorted(scores.items(), key=lambda item: item[1], reverse=True)]
 
     def _encode_qa(self, question, answer):
+        if type(answer) is list:
+            for a in answer:
+                if a['correct']:
+                    correct_answer = a['answer']
+        else:
+            correct_answer = answer
         return self.qae_tokenizer(
             text=question,
-            text_pair=answer,
+            text_pair=correct_answer,
             pad_to_max_length=True,
             max_length=self.SEQ_LENGTH,
             truncation=True,
@@ -228,3 +288,26 @@ class QAEvaluator():
     def _evaluate_qa(self, encoded_qa_pair):
         output = self.qae_model(**encoded_qa_pair)
         return output[0][0][1]
+
+def print_qa(qa_list):
+    for i in range(len(qa_list)):
+        space = ' ' * int(np.where(i < 9, 3, 4)) # wider space for 2 digit q nums
+
+        print('{}) Q: {}'.format(i + 1, qa_list[i]['question']))
+
+        answer = qa_list[i]['answer']
+
+        # print a list of multiple choice answers
+        if type(answer) is list:
+            print('{}A: 1.'.format(space),
+                  answer[0]['answer'],
+                  np.where(answer[0]['correct'], '(correct)', ''))
+            for j in range(1, len(answer)):
+                print('{}{}.'.format(space + '   ', j + 1),
+                      answer[j]['answer'],
+                      np.where(answer[j]['correct'] == True, '(correct)', ''))
+            print('')
+
+        # print full sentence answers
+        else:
+            print('{}A:'.format(space), answer, '\n')

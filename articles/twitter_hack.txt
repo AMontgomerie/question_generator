@@ -1,0 +1,80 @@
+The FBI has launched an investigation after hackers hijacked Twitter accounts of a number of high-profile US figures in an apparent Bitcoin scam.
+
+"The accounts appear to have been compromised" to perpetrate cryptocurrency fraud, said the bureau, urging the public to be vigilant.
+
+Elon Musk, Bill Gates and Joe Biden were among those hit in what Twitter said was a "co-ordinated" attack.
+
+Their official accounts requested donations in the cryptocurrency.
+
+"Everyone is asking me to give back," said a tweet from the account of Mr Gates, the Microsoft founder. "You send $1,000, I send you back $2,000."
+
+The US Senate Commerce committee has demanded Twitter brief it about Wednesday's incident by 23 July.
+
+Twitter said the hackers had targeted its employees "with access to internal systems and tools".
+
+"We know they [the hackers] used this access to take control of many highly-visible (including verified) accounts and Tweet on their behalf," the company said in a series of tweets.
+
+It added that "significant steps" had been taken to limit access to such internal systems and tools while the company's investigation continues.
+
+The tech firm has also blocked users from being able to tweet Bitcoin wallet addresses for the time being.
+
+The UK's National Cyber Security Centre said its officers had "reached out" to the tech firm. "We would urge people to treat requests for money or sensitive information on social media with extreme caution," it said in a statement.
+
+US politicians also have questions. Republican Senator Josh Hawley has written to the company asking if President Trump's account had been vulnerable.
+
+President Trump's account was not compromised, the White House said.
+
+The chair of the Senate Commerce committee has also been in contact with Twitter.
+
+"It cannot be overstated how troubling this incident is, both in its effects and in the apparent failure of Twitter's internal controls to prevent it," Senator Roger Wicker wrote to the firm.
+
+One cyber-security expert said that the breach could have been a lot worse in other circumstances.
+
+"If you were to have this kind of incident take place in the middle of a crisis, where Twitter was being used to either communicate de-escalatory language or critical information to the public, and suddenly it's putting out the wrong messages from several verified status accounts - that could be seriously destabilising," Dr Alexi Drew from King's College London told the BBC.
+
+Twitter earlier had to take the extraordinary step of stopping many verified accounts marked with blue ticks from tweeting altogether.
+
+Password reset requests were also being denied and some other "account functions" disabled.
+
+By 20:30 EDT (00:30 GMT Thursday) users with verified account started to be able to send tweets again, but Twitter said it was still working on a fix.
+
+Dmitri Alperovitch, who co-founded cyber-security company CrowdStrike, told Reuters news agency: "This appears to be the worst hack of a major social media platform yet."
+
+On the official account of Mr Musk, the Tesla and SpaceX chief appeared to offer to double any Bitcoin payment sent to the address of his digital wallet "for the next 30 minutes".
+
+"I'm feeling generous because of Covid-19," the tweet added, along with a Bitcoin link address.
+
+The tweets were deleted just minutes after they were first posted.
+
+But as the first such tweet from Mr Musk's account was removed, another one appeared, then a third.
+
+Others targeted included reality TV star Kim Kardashian West, former US President Obama, media billionaire Mike Bloomberg, the ride-sharing app Uber, and the iPhone-maker Apple.
+The campaign of Joe Biden, who is the current Democratic presidential candidate, said Twitter had "locked down the account within a few minutes of the breach and removed the related tweet".
+
+The BBC can report from a security source that a web address - cryptoforhealth.com - to which some hacked tweets directed users was registered by a cyber-attacker using the email address mkeyworth5@gmail.com.
+
+The name "Anthony Elias" was used to register the website, but may be a pseudonym - it appears to be a play on "an alias".
+
+Cryptoforhealth is also a registered user name on Instagram, apparently set up contemporaneously to the hack.
+
+The description of the profile read "It was us", alongside a slightly smiling face emoticon.
+
+The Instagram profile also posted a message that said: "It was a charity attack. Your money will find its way to the right place."
+
+In any case, the real identities of the perpetrators are as yet unknown.
+
+Cameron Winklevoss, who was declared the world's first Bitcoin billionaire in 2017 along with his twin brother Tyler, tweeted a message on Wednesday warning people not to participate in the "scam".
+
+In the short time it was online, the link displayed in the tweets of targeted accounts received hundreds of contributions totalling more than $100,000 (£80,000), according to publicly available blockchain records.
+
+The Twitter accounts targeted have millions of followers.
+
+Last year, Twitter chief executive Jack Dorsey's account was hacked, but the company said it had fixed the flaw that left his account vulnerable.
+
+Dr Drew recently co-authored a paper warning about the potential of Twitter being used to sow disinformation.
+
+She said the latest incident highlighted the need for all major social media platforms to check their security measures, particularly in the run up to the US presidential vote in November.
+
+"Social media companies such as Twitter and, Facebook all have a duty to consider the damage and influence their platforms can have on the 2020 election, and I think some companies are taking that more seriously than others," she told the BBC.
+
+"Twitter actually has a good history of being forward-thinking and proactive in this space. But whatever the source of this attack [it seems they have] still not done enough."
