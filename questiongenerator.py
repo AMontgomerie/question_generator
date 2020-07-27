@@ -65,7 +65,7 @@ class QuestionGenerator():
                 qa_list = self._get_ranked_qa_pairs(generated_questions, qg_answers, scores)
 
         else:
-            print("\nSkipping evaluation step...")
+            print("Skipping evaluation step.\n")
             qa_list = self._get_all_qa_pairs(generated_questions, qg_answers)
 
         return qa_list

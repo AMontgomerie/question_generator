@@ -32,8 +32,8 @@ def main():
     )
     parser.add_argument(
         "--use_qa_eval",
-        default=True,
-        type=str,
+        default='True',
+        type=parse_bool_string,
         help="Whether or not you want the generated questions to be filtered for quality. Choose from ['True', 'False']",
     )
     args = parser.parse_args()
@@ -47,9 +47,20 @@ def main():
         text_file,
         num_questions=int(args.num_questions),
         answer_style=args.answer_style,
-        use_evaluator=np.where(args.use_qa_eval == 'True', True, False)
+        use_evaluator=args.use_qa_eval
     )
     print_qa(qa_list)
+
+# taken from https://stackoverflow.com/questions/15008758/parsing-boolean-values-with-argparse
+def parse_bool_string(s):
+    if isinstance(s, bool):
+        return s
+    if s.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif s.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
 
 
 if __name__ == "__main__":
