@@ -31,6 +31,12 @@ def main():
         help="The desired type of answers. Choose from ['all', 'sentences', 'multiple_choice']",
     )
     parser.add_argument(
+        "--show_answers",
+        default='True',
+        type=parse_bool_string,
+        help="Whether or not you want the answers to be visible. Choose from ['True', 'False']",
+    )
+    parser.add_argument(
         "--use_qa_eval",
         default='True',
         type=parse_bool_string,
@@ -49,7 +55,7 @@ def main():
         answer_style=args.answer_style,
         use_evaluator=args.use_qa_eval
     )
-    print_qa(qa_list)
+    print_qa(qa_list, show_answers=args.show_answers)
 
 # taken from https://stackoverflow.com/questions/15008758/parsing-boolean-values-with-argparse
 def parse_bool_string(s):
