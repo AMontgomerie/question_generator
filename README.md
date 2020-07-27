@@ -16,18 +16,24 @@ The input for the QA evaluator follows the format for `BertForSequenceClassifica
 [CLS] <question> [SEP] <answer [SEP]
 ```
 ## Usage
-The `QuestionGenerator` class can be instantiated and used like this:
+The easiest way to generate some questions is to clone the github repo and then run `qg_run.py` like this:
+```
+!git clone https://github.com/iarfmoose/question_generator
+!python 'question_generator/run_qg.py' --text_dir 'question_generator/articles/twitter_hack.txt'
+```
+
+The `QuestionGenerator` class can also be instantiated and used like this:
 ```python
 from questiongenerator import QuestionGenerator
 question_generator = QuestionGenerator()
 question_generator.generate_questions(text, num_questions=10)
 ```
-If the chosen number of questions is too large, then the model may not be able to generate enough. The maximum number of questions will depend on the length of the input text, or more specifically the number of sentences and named entities containined within text.
+This returns a list of dictionaries containing question and answer pairs. In the case of multiple choice questions, the answer will contain a list of dictionaries containing the answers and a boolean value stating if the answer is correct or not. The output can be easily printed using the `print_qa()` function.
 
-Calling `generate_questions()` will cause the question generator to split the text and generate questions. The generated questions will then be fed into the QA evaluator. The final output will be the top n questions according to the QA evaluator's predictions.
+### Choosing the number of questions
+The desired number of questions can be passed as a command line argument using `--num_qeustions`  or as an argument when calling `qg.generate(text, num_questions=20`. If the chosen number of questions is too large, then the model may not be able to generate enough. The maximum number of questions will depend on the length of the input text, or more specifically the number of sentences and named entities containined within text.
 
-## Models
-The finetuned models will be uploaded soon.
+Calling `generate()` will cause the question generator to split the text and generate questions. The generated questions will then be fed into the QA evaluator. The final output will be the top n questions according to the QA evaluator's predictions.
 
-## Datasets
-The datasets will be uploaded soon.
+### Answer types types
+The system can generate questions with full-sentence answers (`'sentences'`), questions with multiple-choice answers (`'multiple_choice'`), or a mix of both (`'all'`). This can be selected using the `--answer_style` or `qg.generate(answer_style=<style>)` arguments.
