@@ -74,10 +74,6 @@ class QuestionGenerator():
 
         VALID_ANSWER_STYLES = ['all', 'sentences', 'multiple_choice']
 
-        sentences = self._split_text(text)
-        inputs = []
-        answers = []
-
         if answer_style not in VALID_ANSWER_STYLES:
             raise ValueError(
                 "Invalid answer style {}. Please choose from {}".format(
@@ -86,12 +82,19 @@ class QuestionGenerator():
                 )
             )
 
+        inputs = []
+        answers = []
+
         if answer_style == 'sentences' or answer_style == 'all':
-            prepped_inputs, prepped_answers = self._prepare_qg_inputs(sentences, text)
-            inputs.extend(prepped_inputs)
-            answers.extend(prepped_answers)
+            segments = self._split_into_segments(text)
+            for segment in segments:
+                sentences = self._split_text(segment)
+                prepped_inputs, prepped_answers = self._prepare_qg_inputs(sentences, segment)
+                inputs.extend(prepped_inputs)
+                answers.extend(prepped_answers)
 
         if answer_style == 'multiple_choice' or answer_style == 'all':
+            sentences = self._split_text(text)
             prepped_inputs, prepped_answers = self._prepare_qg_inputs_MC(sentences)
             inputs.extend(prepped_inputs)
             answers.extend(prepped_answers)
@@ -110,16 +113,30 @@ class QuestionGenerator():
     def _split_text(self, text):
         MAX_SENTENCE_LEN = 128
 
-        sentences = re.split('\(.|\?|\n|!\)', text)
-        sentences = [s for s in sentences if len(s) > 0]
+        sentences = re.findall('.*?[.!\?]', text)
 
         cut_sentences = []
         for sentence in sentences:
             if len(sentence) > MAX_SENTENCE_LEN:
-                sentences = sentences + re.split('[;:)]', sentence)
-                cut_sentences.append(sentence)
-        sentences = [s for s in sentences if s not in cut_sentences]
-        return [s.strip(" ") for s in sentences]
+                cut_sentences.extend(re.split('[,;:)]', sentence))
+        sentences = sentences + cut_sentences
+
+        return list(set([s.strip(" ") for s in sentences]))
+
+    def _split_into_segments(self, text):
+        MAX_TOKENS = 490
+
+        paragraphs = text.split('\n')
+        tokenized_paragraphs = [self.qg_tokenizer(p)['input_ids'] for p in paragraphs if len(p) > 0]
+
+        segments = []
+        while len(tokenized_paragraphs) > 0:
+            segment = []
+            while len(segment) < MAX_TOKENS and len(tokenized_paragraphs) > 0:
+                paragraph = tokenized_paragraphs.pop(0)
+                segment.extend(paragraph)
+            segments.append(segment)
+        return [self.qg_tokenizer.decode(s) for s in segments]
 
     def _prepare_qg_inputs(self, sentences, text):
         inputs = []
