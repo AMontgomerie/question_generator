@@ -1,0 +1,61 @@
+A trip on London's underground is rarely a relaxing experience, but the Covid-19 pandemic has added an extra level of anxiety for many.
+
+I'm off to try out a new technology that promises to train my brain to relax. Sitting far apart from other passengers in the carriage while wearing a hot surgical mask, I'm hoping it works.
+
+I'm meeting Dr Jamil El-Imad who enjoyed a successful career in the computer industry before, in his words, "getting sucked into neuroscience". The Lebanese-born IT expert knew all about computer languages and was intrigued by the similarities between data and the way the brain processes information.
+
+Recognising the potential of virtual reality devices he worked on how to use cloud computing techniques to capture and analyse brain signals and create a machine to replicate the meditation experience.
+
+Neuroplasticity, the adaptability of the brain, is the science here. Neurons, the circuits of the brain, become stronger the more they are exercised. They are changeable. And they are individual.
+
+Neurons gripped Dr El-Imad. He sees our neurons as "a forest where every tree is different". This means that each person needs their own approach to gaining mental resilience.
+
+His innovation was to integrate the technology of the electroencephalogram (EEG), which monitors electrical activity in the brain, with a virtual reality headset.
+
+The combination means that the response of the subject's brain to images can be measured.
+
+The biofeedback can be analysed instantly using the affordable computer power offered by cloud computing, industrial levels of data processing rented over the internet.
+
+Murali Doraiswamy, professor of psychiatry and behavioural sciences at Duke University School of Medicine in North Carolina in the US and a former adviser to Dr El-Imad's company NeuroPro, says that meditation and the whole realm of mindfulness are proven treatments for some conditions.
+
+"There are many types of mindfulness and it's not a panacea. But in the last 30 years mindfulness has gone from fringe science to the mainstream. It can be as effective as medication in preventing a recurrence of depression. It won't be for everyone, but it can change our outlook."
+
+The first contact I get with this system is when the EEG headset is slipped over my forehead. It's a semi-circular band containing sensors that transmit wireless signals revealing just what is going on in my brain.
+
+The EEG headset takes feeds from my level of attention and will register when my mind veers off course. Over multiple sessions this should help subjects to master their own mind and gain more control over their thoughts, which is a definition of mindfulness.
+
+The VR headset is not a bulky helmet. In fact there's no sense of the weight due to a springy coil that holds it and takes the weight off your head. Without that weight there's no sense of enclosure either.
+
+Hearing ethereal pipe music, I see an island floating in space. Waves lap on a beach and beyond giant Easter Island statues are planted among the rocks and palm trees. White feathers float on the breeze. I am told they symbolise freedom and my breathing keeps them floating.
+
+I move on to the beach and find myself on the sand looking towards the statues planted to my right. But a white fog appears in front of me, which ebbs and flows as I try to focus on the faces of the statues.
+
+That sea mist keeps returning to block my view because I'm losing my focus on the moment, and hence am not sufficiently relaxed.
+
+Focusing on the moment takes some effort. I'm hindered by a journalist's instinct to note events. Dr El-Imad tells me that our minds wander for 50% of our waking hours so excluding other thoughts is a challenge we all face.
+
+I capture the statues in sharp definition from time to time and emerge shocked that I was in the machine for five minutes. It felt like two or three as I narrowed my thoughts on the scene in front of me.
+
+Beside this set-up a laptop screen reflects the signals the EEG captured leaking out of my brain. It shows areas of my consciousness lighting up. This data is saved for analytic purposes. Anonymised and encrypted it can be sent on to neuroscience researchers.
+
+I'm given a score that defines my level of concentration and provides a target for improvement. Dr El-Imad thinks my neurons have behaved pretty well for a first outing, rating 30% concentration.
+
+The sense of escape that comes with sliding into a floating island vision did dilute the anxiety spurred by my tube journey. And the hovering Easter Island stage set is just one virtual location option among promised relaxing spots.
+
+Rolling out the Dream Machine to the public should not be expensive. NeuroPro uses off-the-shelf technology, with VR and EEG hardware costing no more than £1,000 in total.
+
+Possible sites for this service include gyms and fitness centres. Alternatively, it could be installed in chill-out rooms in corporate offices, relieving employees of anxiety and allowing the company to retain good talent.
+
+This is where Alastair Campbell, former Labour Party communications chief and mental health campaigner, thinks the technology might have a real impact.
+
+Mr Campbell has lectured businesses on the significance of mindfulness and says the corporate world's view of mental health has changed a lot.
+
+"We've underplayed the importance of how employees use their brains. I've definitely seen a change. In the City banks now realise that it's not smart if they invest a lot in someone who then burns out."
+
+In a service economy protecting employee brainpower through mental health initiatives makes sense, says Mr Campbell.
+
+He's reserving judgement on the Dream Machine itself. "I'm always interested in anything that gets people talking about mental health. You can't spend your life walking around with a Dream Machine on your head but you can train your mind to work differently."
+
+The Dream Machine emerged from the mind of a technologist. But Dr El-Imad concedes that a smartphone society is bad for our brains. "We live in an attention-seeking economy, one that distracts us and puts pressure on us. We are not a multi-tasking species!"
+
+So it could be our neurons need the Dream Machine to help us dodge the world technology has built. Mr Campbell agrees. "I have to keep reminding myself of the pointlessness of Twitter, of going through your phone all the time."
