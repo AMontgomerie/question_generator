@@ -8,35 +8,22 @@ import re
 import random
 import json
 import en_core_web_sm
-from transformers import T5Tokenizer, T5ForConditionalGeneration, T5Config
-from transformers import BertTokenizer, BertForSequenceClassification
-
+#from transformers import T5Tokenizer, T5ForConditionalGeneration, T5Config
+#from transformers import BertTokenizer, BertForSequenceClassification
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, AutoModelForSequenceClassification
 class QuestionGenerator():
 
     def __init__(self, model_dir=None):
-        QG_PRETRAINED = 't5-base'
-        QG_FINETUNED_MODEL = 'qg_model.pth'
+
+        QG_PRETRAINED = 'iarfmoose/t5-base-question-generator'
         self.ANSWER_TOKEN = '<answer>'
         self.CONTEXT_TOKEN = '<context>'
         self.SEQ_LENGTH = 512
 
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-        self.qg_tokenizer = T5Tokenizer.from_pretrained(QG_PRETRAINED)
-        self.qg_tokenizer.add_special_tokens(
-            {'additional_special_tokens': [self.ANSWER_TOKEN, self.CONTEXT_TOKEN]}
-        )
-
-        config = T5Config(decoder_start_token_id=self.qg_tokenizer.pad_token_id)
-        self.qg_model = T5ForConditionalGeneration(config).from_pretrained(QG_PRETRAINED)
-        self.qg_model.resize_token_embeddings(len(self.qg_tokenizer))
-
-        if model_dir:
-            checkpoint = torch.load(os.path.join(model_dir, QG_FINETUNED_MODEL))
-        else:
-            checkpoint = torch.load(os.path.join(sys.path[0], 'models/', QG_FINETUNED_MODEL))
-
-        self.qg_model.load_state_dict(checkpoint['model_state_dict'])
+        self.qg_tokenizer = AutoTokenizer.from_pretrained(QG_PRETRAINED)
+        self.qg_model = AutoModelForSeq2SeqLM.from_pretrained(QG_PRETRAINED)
         self.qg_model.to(self.device)
 
         self.qa_evaluator = QAEvaluator(model_dir)
@@ -259,23 +246,16 @@ class QuestionGenerator():
 
 class QAEvaluator():
     def __init__(self, model_dir=None):
-        QAE_PRETRAINED = 'bert-base-cased'
-        QAE_FINETUNED_MODEL = 'qa_eval_model.pth'
+
+        QAE_PRETRAINED = 'iarfmoose/bert-base-cased-qa-evaluator'
         self.SEQ_LENGTH = 512
 
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-        self.qae_tokenizer = BertTokenizer.from_pretrained(QAE_PRETRAINED)
+        self.qae_tokenizer = AutoTokenizer.from_pretrained(QAE_PRETRAINED)
+        self.qae_model = AutoModelForSequenceClassification.from_pretrained(QAE_PRETRAINED)
+        self.qae_model.to(self.device)
 
-        self.qae_model = BertForSequenceClassification.from_pretrained(QAE_PRETRAINED)
-
-        if model_dir:
-            checkpoint = torch.load(os.path.join(model_dir, QAE_FINETUNED_MODEL))
-        else:
-            checkpoint = torch.load(os.path.join(sys.path[0], 'models/', QAE_FINETUNED_MODEL))
-
-        self.qae_model.load_state_dict(state_dict=checkpoint['model_state_dict'])
-        self.qae_model = self.qae_model.to(self.device)
 
     def encode_qa_pairs(self, questions, answers):
         encoded_pairs = []
