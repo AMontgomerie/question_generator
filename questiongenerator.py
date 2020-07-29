@@ -106,6 +106,8 @@ class QuestionGenerator():
         for sentence in sentences:
             if len(sentence) > MAX_SENTENCE_LEN:
                 cut_sentences.extend(re.split('[,;:)]', sentence))
+        # temporary solution to remove useless post-quote sentence fragments
+        cut_sentences = [s for s in sentences if len(s.split(" ")) > 5]
         sentences = sentences + cut_sentences
 
         return list(set([s.strip(" ") for s in sentences]))
