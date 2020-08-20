@@ -31,7 +31,7 @@ answer_token <extracted answer> context_token <context>
 ```
 The concatenated string is then encoded and fed into the question generator model. The model architecture is `t5-base`. The pretrained model was finetuned as a sequence-to-sequence model on a dataset made up several well-known QA datasets ([SQuAD](https://rajpurkar.github.io/SQuAD-explorer/), [RACE](http://www.cs.cmu.edu/~glai1/data/race/), [CoQA](https://stanfordnlp.github.io/coqa/), and [MSMARCO](https://microsoft.github.io/msmarco/)). The datasets were restructured by concatenating the answer and context fields into the previously mentioned format. The concatenated answer and context was then used as an input for training, and the question field became the targets.
 
-The datasets can be found [here](https://drive.google.com/drive/folders/15MrcuaedWU-A_uC-aHzDjsVaJmKzqTko?usp=sharing).
+The datasets can be found [here](https://drive.google.com/drive/folders/17ruVE8RSR6WDC3t3zIUY_1g18Xe5hdwb?usp=sharing).
 
 ### QA Evaluator
 The QA evaluator takes a question answer pair as an input and outputs a value representing its prediction about whether the input was a valid question and answer pair or not. The model is ``bert-base-cased`` with a sequence classification head. The pretrained model was finetuned on the same data as the question generator model, but the context was removed. The question and answer were concatenated 50% of the time. In the other 50% of the time a corruption operation was performed (either swapping the answer for an unrelated answer, or by copying part of the question into the answer). The model was then trained to predict whether the input sequence represented one of the original QA pairs or a corrupted input.
