@@ -4,7 +4,7 @@ Question Generator is an NLP system for generating reading comprehension-style q
 ## Usage
 The easiest way to generate some questions is to clone the github repo and then run `qg_run.py` like this:
 ```
-!git clone https://github.com/iarfmoose/question_generator
+!git clone https://github.com/amontgomerie/question_generator
 !python 'question_generator/run_qg.py' --text_dir 'question_generator/articles/twitter_hack.txt'
 ```
 This will generate 10 question-answer pairs of mixed style (full-sentence and multiple choice) based on the article specified in `--text_dir` and print them to the console. For more information see the qg_commandline_example notebook.
