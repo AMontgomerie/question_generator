@@ -4,6 +4,7 @@ Streamlit demo of Question Generator
 
 
 import streamlit as st
+import numpy as np
 from questiongenerator import QuestionGenerator
 
 
