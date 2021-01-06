@@ -1,10 +1,9 @@
-blis==0.7.4
 catalogue==1.0.0
 certifi==2020.12.5
 chardet==4.0.0
 click==7.1.2
 cymem==2.0.5
-en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.3.5/en_core_web_sm-2.3.5.tar.gz
+en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.3.1/en_core_web_sm-2.3.1.tar.gz
 filelock==3.0.12
 idna==2.10
 joblib==1.0.0
@@ -20,14 +19,12 @@ requests==2.25.1
 sacremoses==0.0.43
 sentencepiece==0.1.94
 six==1.15.0
-spacy==2.3.5
+spacy==2.3.1
 srsly==1.0.5
-thinc==7.4.5
 tokenizers==0.9.4
 torch==1.7.1
 torchaudio==0.7.2
 torchvision==0.8.2
-tqdm==4.55.1
 transformers==4.1.1
 typing-extensions==3.7.4.3
 urllib3==1.26.2
