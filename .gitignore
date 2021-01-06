@@ -138,5 +138,5 @@ dmypy.json
 cython_debug/
 
 qg_venv/
-.vscode
+.vscode/
 test.py
