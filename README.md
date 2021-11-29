@@ -2,25 +2,39 @@
 
 Question Generator is an NLP system for generating reading comprehension-style questions from texts such as news articles or pages excerpts from books. The system is built using pretrained models from [HuggingFace Transformers](https://github.com/huggingface/transformers). There are two models: the question generator itself, and the QA evaluator which ranks and filters the question-answer pairs based on their acceptability.
 
-## Installation
+## Update 2021/11/29
 
-You can clone the repo and then install the package like this:
+### Updated training scripts
 
+The training notebooks have been updated with training scripts. To run:
+
+```bash
+python question_generator/training/qg_train.py
 ```
-git clone https://github.com/amontgomerie/question_generator
-python -m pip install -e question_generator
+
+```bash
+python question_generator/training/qa_eval_train.py
 ```
+
+Hyperparameters can be changed using commandline arguments. See the scripts for the list of available arguments.
+
+### Datasets uploaded to Huggingface Hub
+
+The datasets have been uploaded to the Huggingface Hub:
+
+- [question generator training and validation data](https://huggingface.co/datasets/iarfmoose/question_generator)
+- [qa evaluator training and validation data](https://huggingface.co/datasets/iarfmoose/qa_evaluator)
 
 ## Usage
 
 The easiest way to generate some questions is to clone the github repo and then run `qg_run.py` like this:
 
 ```
-!git clone https://github.com/amontgomerie/question_generator
-!python 'question_generator/run_qg.py' --text_dir 'question_generator/articles/twitter_hack.txt'
+git clone https://github.com/amontgomerie/question_generator
+python question_generator/run_qg.py --text_file question_generator/articles/twitter_hack.txt
 ```
 
-This will generate 10 question-answer pairs of mixed style (full-sentence and multiple choice) based on the article specified in `--text_dir` and print them to the console. For more information see the qg_commandline_example notebook.
+This will generate 10 question-answer pairs of mixed style (full-sentence and multiple choice) based on the article specified in `--text_file` and print them to the console. For more information see the qg_commandline_example notebook.
 
 The `QuestionGenerator` class can also be instantiated and used like this:
 

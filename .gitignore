@@ -140,3 +140,4 @@ cython_debug/
 qg_venv/
 .vscode/
 test.py
+data/
