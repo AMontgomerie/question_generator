@@ -31,7 +31,9 @@ The easiest way to generate some questions is to clone the github repo and then 
 
 ```
 git clone https://github.com/amontgomerie/question_generator
-python question_generator/run_qg.py --text_file question_generator/articles/twitter_hack.txt
+cd question_generator
+pip install -r requirements.txt -qq
+python run_qg.py --text_file articles/twitter_hack.txt
 ```
 
 This will generate 10 question-answer pairs of mixed style (full-sentence and multiple choice) based on the article specified in `--text_file` and print them to the console. For more information see the qg_commandline_example notebook.
