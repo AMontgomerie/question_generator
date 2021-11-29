@@ -172,7 +172,7 @@ class QuestionGenerator:
                 segment.extend(paragraph)
             segments.append(segment)
 
-        return [self.qg_tokenizer.decode(s) for s in segments]
+        return [self.qg_tokenizer.decode(s, skip_special_tokens=True) for s in segments]
 
     def _prepare_qg_inputs(
         self,
