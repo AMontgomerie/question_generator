@@ -53,6 +53,7 @@ if __name__ == "__main__":
         model=model,
         pin_memory=args.pin_memory,
         save_dir=args.save_dir,
+        tokenizer=tokenizer,
         train_batch_size=args.train_batch_size,
         train_set=train_set,
         valid_batch_size=args.valid_batch_size,
