@@ -3,6 +3,7 @@ from tqdm import tqdm
 from torch.optim import AdamW
 from torch.utils.data import DataLoader, Dataset
 from sklearn.metrics import accuracy_score
+from transformers import AutoTokenizer
 
 from utils import AverageMeter
 
@@ -15,8 +16,9 @@ class Trainer:
         epochs: int,
         learning_rate: float,
         model: torch.nn.Module,
+        tokenizer: AutoTokenizer,
         pin_memory: bool,
-        save_path: str,
+        save_dir: str,
         train_batch_size: int,
         train_set: Dataset,
         valid_batch_size: int,
@@ -25,7 +27,7 @@ class Trainer:
     ) -> None:
         self.device = device
         self.epochs = epochs
-        self.save_path = save_path
+        self.save_dir = save_dir
         self.train_batch_size = train_batch_size
         self.valid_batch_size = valid_batch_size
         self.train_loader = DataLoader(
@@ -42,6 +44,7 @@ class Trainer:
             pin_memory=pin_memory,
             shuffle=False
         )
+        self.tokenizer = tokenizer
         self.model = model.to(self.device)
         self.optimizer = AdamW(self.model.parameters(), lr=learning_rate)
         self.train_loss = AverageMeter()
@@ -76,14 +79,14 @@ class Trainer:
                         f"Validation accuracy improved from {self.best_valid_score:.4f} to {valid_accuracy:.4f}. Saving."
                     )
                     self.best_valid_score = valid_accuracy
-                    self._save(epoch)
+                    self._save()
             else:
                 valid_loss = self.evaluate(self.valid_loader)
                 if valid_loss < self.best_valid_score:
                     print(
                         f"Validation loss decreased from {self.best_valid_score:.4f} to {valid_loss:.4f}. Saving.")
                     self.best_valid_score = valid_loss
-                    self._save(epoch)
+                    self._save()
 
     @torch.no_grad()
     def evaluate(self, dataloader: DataLoader) -> float:
@@ -116,13 +119,6 @@ class Trainer:
                 tepoch.update(1)
         return accuracy.avg
 
-    def _save(self, epoch: int) -> None:
-        torch.save(
-            {
-                'epoch': epoch,
-                'model_state_dict': self.model.state_dict(),
-                'optimizer_state_dict': self.optimizer.state_dict(),
-                'best_score': self.best_valid_score,
-            },
-            self.save_path
-        )
+    def _save(self) -> None:
+        self.tokenizer.save_pretrained(self.save_dir)
+        self.model.save_pretrained(self.save_dir)

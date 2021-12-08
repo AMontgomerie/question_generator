@@ -16,7 +16,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--qg_model", type=str, default="t5-base")
     parser.add_argument("--pad_mask_id", type=int, default=-100)
     parser.add_argument("--pin_memory", dest="pin_memory", action="store_true", default=False)
-    parser.add_argument("--save_path", type=str, default="./t5-question-generator.pt")
+    parser.add_argument("--save_dir", type=str, default="./t5-base-question-generator")
     parser.add_argument("--train_batch_size", type=int, default=4)
     parser.add_argument("--valid_batch_size", type=int, default=32)
     return parser.parse_args()
@@ -52,7 +52,8 @@ if __name__ == "__main__":
         learning_rate=args.learning_rate,
         model=model,
         pin_memory=args.pin_memory,
-        save_path=args.save_path,
+        save_dir=args.save_dir,
+        tokenizer=tokenizer,
         train_batch_size=args.train_batch_size,
         train_set=train_set,
         valid_batch_size=args.valid_batch_size,
