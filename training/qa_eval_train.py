@@ -19,7 +19,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--qa_eval_model", type=str, default="bert-base-cased")
     parser.add_argument("--pad_mask_id", type=int, default=-100)
     parser.add_argument("--pin_memory", dest="pin_memory", action="store_true", default=False)
-    parser.add_argument("--save_dir", type=str, default="./qa_evaluator")
+    parser.add_argument("--save_dir", type=str, default="./bert-base-cased-qa-evaluator")
     parser.add_argument("--train_batch_size", type=int, default=16)
     parser.add_argument("--valid_batch_size", type=int, default=128)
     return parser.parse_args()
