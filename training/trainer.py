@@ -27,7 +27,7 @@ class Trainer:
     ) -> None:
         self.device = device
         self.epochs = epochs
-        self.save_path = save_dir
+        self.save_dir = save_dir
         self.train_batch_size = train_batch_size
         self.valid_batch_size = valid_batch_size
         self.train_loader = DataLoader(
