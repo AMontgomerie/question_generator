@@ -5,4 +5,4 @@ sentencepiece==0.1.96
 spacy==2.3.1
 tokenizers==0.10.3
 torch==1.7.1
-transformers==4.12.5
+transformers==4.30.0
